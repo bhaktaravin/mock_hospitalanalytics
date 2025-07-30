@@ -1,0 +1,96 @@
+<div class="staff-management">
+  <div class="staff-header">
+    <h2>Staff Management</h2>
+    <div class="staff-stats">
+      <div class="stat-item">
+        <span class="stat-number">{{ staff().filter(s => s.status === 'on-duty').length }}</span>
+        <span class="stat-label">On Duty</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">{{ staff().filter(s => s.status === 'emergency').length }}</span>
+        <span class="stat-label">Emergency</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="staff-controls">
+    <div class="search-box">
+      <input 
+        type="text" 
+        placeholder="Search staff..." 
+        [(ngModel)]="searchTerm"
+        class="search-input">
+    </div>
+    
+    <div class="filter-controls">
+      <select [(ngModel)]="selectedDepartment" class="filter-select">
+        <option value="all">All Departments</option>
+        <option value="Emergency">Emergency</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Surgery">Surgery</option>
+        <option value="Radiology">Radiology</option>
+      </select>
+      
+      <select [(ngModel)]="selectedShift" class="filter-select">
+        <option value="all">All Shifts</option>
+        <option value="morning">Morning</option>
+        <option value="afternoon">Afternoon</option>
+        <option value="night">Night</option>
+      </select>
+      
+      <select [(ngModel)]="selectedStatus" class="filter-select">
+        <option value="all">All Status</option>
+        <option value="on-duty">On Duty</option>
+        <option value="off-duty">Off Duty</option>
+        <option value="break">Break</option>
+        <option value="emergency">Emergency</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="staff-grid">
+    <div *ngFor="let member of filteredStaff" class="staff-card">
+      <div class="staff-card-header">
+        <div class="staff-info">
+          <h3>{{ member.name }}</h3>
+          <p class="role">{{ member.role }}</p>
+          <p class="department">{{ member.department }}</p>
+        </div>
+        <div class="staff-status">
+          <span [class]="'status-badge ' + getStatusClass(member.status)">
+            {{ member.status | titlecase }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="staff-details">
+        <div class="detail-item">
+          <span class="detail-label">Shift:</span>
+          <span class="detail-value">
+            {{ getShiftIcon(member.shift) }} {{ member.shift | titlecase }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Phone:</span>
+          <span class="detail-value">{{ member.phone }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value">{{ member.email }}</span>
+        </div>
+      </div>
+      
+      <div class="staff-actions">
+        <select 
+          [value]="member.status" 
+          (change)="updateStaffStatus(member.id, $event.target.value)"
+          class="status-select">
+          <option value="on-duty">On Duty</option>
+          <option value="off-duty">Off Duty</option>
+          <option value="break">Break</option>
+          <option value="emergency">Emergency</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

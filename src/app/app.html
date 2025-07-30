@@ -1,0 +1,101 @@
+<div class="healthcare-dashboard">
+  <!-- Notifications Component (fixed position) -->
+  <app-notifications></app-notifications>
+
+  <header class="dashboard-header">
+    <div class="header-left">
+      <h1>Healthcare Dashboard</h1>
+      <nav class="main-navigation">
+        <button 
+          [class]="'nav-btn ' + (currentView() === 'dashboard' ? 'active' : '')"
+          (click)="setView('dashboard'); createChartsIfNeeded()">
+          📊 Dashboard
+        </button>
+        <button 
+          [class]="'nav-btn ' + (currentView() === 'patients' ? 'active' : '')"
+          (click)="setView('patients')">
+          👥 Patients
+        </button>
+        <button 
+          [class]="'nav-btn ' + (currentView() === 'staff' ? 'active' : '')"
+          (click)="setView('staff')">
+          👨‍⚕️ Staff
+        </button>
+        <button 
+          [class]="'nav-btn ' + (currentView() === 'appointments' ? 'active' : '')"
+          (click)="setView('appointments')">
+          📅 Appointments
+        </button>
+      </nav>
+    </div>
+    
+    <div class="header-stats" *ngIf="currentView() === 'dashboard'">
+      <div class="stat-card">
+        <span class="stat-value">1,247</span>
+        <span class="stat-label">Total Patients</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">89</span>
+        <span class="stat-label">Active Staff</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">156</span>
+        <span class="stat-label">Appointments Today</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <!-- Dashboard View -->
+    <div *ngIf="currentView() === 'dashboard'" class="dashboard-grid">
+      <div class="chart-container">
+        <h3>Patient Admissions (Last 7 Days)</h3>
+        <canvas id="admissionsChart"></canvas>
+      </div>
+      
+      <div class="chart-container">
+        <h3>Department Capacity</h3>
+        <canvas id="capacityChart"></canvas>
+      </div>
+      
+      <div class="recent-activities">
+        <h3>Recent Activities</h3>
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-time">10:30 AM</span>
+            <span class="activity-text">New patient registered - John Smith</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-time">10:15 AM</span>
+            <span class="activity-text">Surgery completed - Room 302</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-time">09:45 AM</span>
+            <span class="activity-text">Emergency admission - ER</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alerts-panel">
+        <h3>System Alerts</h3>
+        <div class="alert-item warning">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-text">ICU at 95% capacity</span>
+        </div>
+        <div class="alert-item info">
+          <span class="alert-icon">ℹ️</span>
+          <span class="alert-text">Maintenance scheduled for tonight</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Management View -->
+    <app-patient-management *ngIf="currentView() === 'patients'"></app-patient-management>
+
+    <!-- Staff Management View -->
+    <app-staff-management *ngIf="currentView() === 'staff'"></app-staff-management>
+
+    <!-- Appointments View -->
+    <app-appointments *ngIf="currentView() === 'appointments'"></app-appointments>
+  </main>
+</div>

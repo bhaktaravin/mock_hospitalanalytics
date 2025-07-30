@@ -1,0 +1,79 @@
+<div class="patient-management">
+  <div class="patient-header">
+    <h2>Patient Management</h2>
+    <div class="patient-controls">
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Search patients..." 
+          [(ngModel)]="searchTerm"
+          class="search-input">
+      </div>
+      
+      <div class="filter-controls">
+        <select [(ngModel)]="selectedStatus" class="filter-select">
+          <option value="all">All Status</option>
+          <option value="critical">Critical</option>
+          <option value="stable">Stable</option>
+          <option value="recovering">Recovering</option>
+          <option value="discharged">Discharged</option>
+        </select>
+        
+        <select [(ngModel)]="selectedDepartment" class="filter-select">
+          <option value="all">All Departments</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Cardiology">Cardiology</option>
+          <option value="Orthopedics">Orthopedics</option>
+          <option value="Pediatrics">Pediatrics</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="patients-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Patient ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Department</th>
+          <th>Condition</th>
+          <th>Room</th>
+          <th>Status</th>
+          <th>Admission Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of filteredPatients">
+          <td>{{ patient.id }}</td>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.age }}</td>
+          <td>{{ patient.department }}</td>
+          <td>{{ patient.condition }}</td>
+          <td>{{ patient.room }}</td>
+          <td>
+            <span [class]="'status-badge ' + getStatusClass(patient.status)">
+              {{ patient.status | titlecase }}
+            </span>
+          </td>
+          <td>{{ patient.admissionDate | date:'short' }}</td>
+          <td>
+            <div class="action-buttons">
+              <select 
+                [value]="patient.status" 
+                (change)="updatePatientStatus(patient.id, $event.target.value)"
+                class="status-select">
+                <option value="critical">Critical</option>
+                <option value="stable">Stable</option>
+                <option value="recovering">Recovering</option>
+                <option value="discharged">Discharged</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
